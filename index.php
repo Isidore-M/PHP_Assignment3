@@ -216,6 +216,18 @@
                 </div>
                 <a href="#addTechnicianModal" class="button" data-toggle="modal" data-bs-toggle="modal"> <i class="bi bi-plus-circle-fill"></i> Add Technician</a>
             </div>
+
+                                 <!-- Display the Alert-->
+                        <?php 
+                            if (isset($_GET['delete_msg'])){
+                                $delete_msg = $_GET['delete_msg'];
+                            echo'<div class="alert alert-warning alert-dismissible fade show " role="alert" id ="al">
+                                    '.$delete_msg.'
+                                    <button type="button" class="clo"  data-bs-dismiss="alert" " > <i class="bi1 bi-x-circle"></i> </button>
+                                    
+                                </div>';
+                        }
+                        ?>
             <div class="content">
             <table class="table table-bordered table-hover table-striped">
 
@@ -250,7 +262,7 @@
                                 <td> <?php echo $row['phone']; ?> </td>
                                 <td> <?php echo $row['passwordHash']; ?> </td>  
                                 <td class="text-center"> <a href="#" class="btn btn-success" >Update</a></td>
-                                <td class="text-center"> <a href="#" class="btn btn-danger" >Delete</a></td>        
+                                <td class="text-center"> <a href="delete_page.php?id=<?php echo $row['id']; ?>" class="btn btn-danger" >Delete</a></td>        
                           </tr>
                                 
                             <?php
