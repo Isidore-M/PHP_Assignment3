@@ -192,8 +192,12 @@
                                 <td> <?php echo $row['name']; ?> </td>
                                 <td> <?php echo $row['version']; ?> </td>
                                 <td> <?php echo $row['releaseDate']; ?> </td> 
-                                <td class="text-center"> <a href="#" class="btn btn-success" >Update</a></td>
-                                <td class="text-center"> <a href="#" class="btn btn-danger" >Delete</a></td> 
+                                <td class="text-center"> 
+                                    <a href="update_page.php?id=<?php echo $row['productCode']; ?>&table=products" class="btn btn-success">Update</a>
+                                </td>
+                                <td class="text-center"> 
+                                    <a href="delete_page.php?id=<?php echo $row['productCode']; ?>&table=products" class="btn btn-danger">Delete</a>
+                                </td>
                           </tr>
                                 
                             <?php
@@ -261,8 +265,12 @@
                                 <td> <?php echo $row['email']; ?> </td>
                                 <td> <?php echo $row['phone']; ?> </td>
                                 <td> <?php echo $row['passwordHash']; ?> </td>  
-                                <td class="text-center"> <a href="#" class="btn btn-success" >Update</a></td>
-                                <td class="text-center"> <a href="delete_page.php?id=<?php echo $row['id']; ?>" class="btn btn-danger" >Delete</a></td>        
+                                <td class="text-center"> 
+                                    <a href="update_page.php?id=<?php echo $row['id']; ?>&table=technicians" class="btn btn-success">Update</a>
+                                </td>
+                                <td class="text-center"> 
+                                    <a href="delete_page.php?id=<?php echo $row['id']; ?>&table=technicians" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this technician?')">Delete</a>
+                                </td>    
                           </tr>
                                 
                             <?php
@@ -317,10 +325,9 @@
                                 <td> <?php echo $row['state']; ?> </td> 
                                 <td> <?php echo $row['phone']; ?> </td>
                                 <td class="text-center">
-                                        <button class="btn btn-sm btn-success">
-                                            <span> View | Update</span>
-                                        </button>
-                                </td>      
+                                    <a href="update_page.php?id=<?php echo $row['id']; ?>&table=customers" class="btn btn-success">Update</a>
+                                    <a href="delete_page.php?id=<?php echo $row['id']; ?>&table=customers" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this customer?')">Delete</a>
+                                </td>
                           </tr>
                                 
                             <?php
