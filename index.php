@@ -1,6 +1,8 @@
                 <?php
  include('dbcon.php');
  
+ include('addIncident.php');
+ 
  
 ?>
 
@@ -118,7 +120,7 @@
                 <li class="navItem-logo"> <a href="#index.php"><img src="./Assets/images/logo tech support.svg"  alt="logo"></a></li>
                 <li class="navItem">
                     <a href="#" class="nav-link active py-3 border-bottom rounded-0 text-black " data-bs-toggle ="tab" data-bs-target="#products">
-                    <i class="bi bi-box-seam"></i><span>Product</span>
+                    <i class="bi bi-box-seam"></i><span>Products</span>
                     </a>
                 </li>
                 <li class="navItem">
@@ -292,7 +294,13 @@
                 </div>
                 <a href="#addCustomerModal" class="button" data-toggle="modal" data-bs-toggle="modal"> <i class="bi bi-plus-circle-fill"></i>Add a new Customer</a>
             </div>
-                <div class="content">
+
+            <form method="GET" class="mb-3 d-flex">
+            <input type="text" name="search_email" class="form-control me-2"
+           placeholder="Search customer by email">
+            <button type="submit" class="btn btn-dark">Search</button>
+            </form>
+        <div class="content">
         <table class="table table-bordered table-hover table-striped">
 
             <thead class="table-dark">
@@ -306,36 +314,49 @@
                 </tr>
             </thead>
             <tbody>
-                <?php 
-                // make the query first
-                    $query = "select * from `customers`";
-                    // assign the result
-                    $result = mysqli_query($connection,$query);
-                    //test the result
-                    if(!$result){
-                        die("query failed");
-                    }
-                    else{
-                        while($row = mysqli_fetch_assoc($result)){
-                            ?>
-                          <tr>
-                                <td> <?php echo "{$row['firstName']} {$row['lastName']}"; ?> </td>
-                                <td> <?php echo $row['address']; ?> </td>
-                                <td> <?php echo $row['city']; ?> </td>
-                                <td> <?php echo $row['state']; ?> </td> 
-                                <td> <?php echo $row['phone']; ?> </td>
-                                <td class="text-center">
-                                    <a href="update_page.php?id=<?php echo $row['id']; ?>&table=customers" class="btn btn-success">Update</a>
-                                    <a href="delete_page.php?id=<?php echo $row['id']; ?>&table=customers" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this customer?')">Delete</a>
-                                </td>
-                          </tr>
-                                
-                            <?php
-                        }
-                    }
-                ?>
-              
-            </tbody>
+<?php 
+
+// Check if user is searching by email
+if(isset($_GET['search_email']) && !empty($_GET['search_email'])){
+    $email = $_GET['search_email'];
+    $query = "SELECT * FROM `customers` 
+              WHERE `email` LIKE '%$email%'";
+} else {
+    $query = "SELECT * FROM `customers`";
+}
+
+// Run query
+$result = mysqli_query($connection,$query);
+
+// Check if query works
+if(!$result){
+    die("Query failed: " . mysqli_error($connection));
+}
+
+// Loop results
+while($row = mysqli_fetch_assoc($result)){
+?>
+
+<tr>
+    <td> <?php echo "{$row['firstName']} {$row['lastName']}"; ?> </td>
+    <td> <?php echo $row['address']; ?> </td>
+    <td> <?php echo $row['city']; ?> </td>
+    <td> <?php echo $row['state']; ?> </td> 
+    <td> <?php echo $row['phone']; ?> </td>
+    <td class="text-center">
+        <a href="update_page.php?id=<?php echo $row['id']; ?>&table=customers" 
+           class="btn btn-success">Update</a>
+        <a href="delete_page.php?id=<?php echo $row['id']; ?>&table=customers" 
+           class="btn btn-danger"
+           onclick="return confirm('Are you sure you want to delete this customer?')">
+           Delete
+        </a>
+    </td>
+</tr>
+
+<?php } ?>
+
+</tbody>
 
         </table>
     </div>
@@ -347,10 +368,48 @@
                     <h3>Incidents Management</h3>
                     <p> Here you can add,and delete products from the database</p>
                 </div>
-                <a href="#" class="button"> <i class="bi bi-plus-circle-fill"></i> Add product</a>
+                <a href="#addIncidentModal" class="button" data-bs-toggle="modal"> <i class="bi bi-plus-circle-fill"></i> Create incidents</a>
             </div>
-                <h1> this is the Incidents content</h1>
+                <div class="content">
 
+<table class="table table-bordered table-striped">
+<thead class="table-dark">
+<tr>
+<th>ID</th>
+<th>Product</th>
+<th>Customer</th>
+<th>Date Opened</th>
+<th>Date Closed</th>
+<th>Title</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+
+<?php
+$query = "SELECT * FROM incidents";
+$result = mysqli_query($connection,$query);
+
+while($row = mysqli_fetch_assoc($result)){
+?>
+<tr>
+<td><?php echo $row['incidentID']; ?></td>
+<td><?php echo $row['productCode']; ?></td>
+<td><?php echo $row['customerID']; ?></td>
+<td><?php echo $row['dateOpened']; ?></td>
+<td><?php echo $row['dateClosed']; ?></td>
+<td><?php echo $row['title']; ?></td>
+<td class="text-center">
+    <a href="update_page.php?id=<?php echo $row['incidentID']; ?>&table=incidents" 
+       class="btn btn-success">Update</a>
+</td>
+</tr>
+<?php } ?>
+
+</tbody>
+</table>
+
+</div>
             </div>
 
         </div>
